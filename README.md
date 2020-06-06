@@ -9,6 +9,10 @@ An integrated development environment for Bethesda Plugin Files.
 # usage
 Download a release from the [releases tab](https://github.com/matortheeternal/zedit/releases) and install or extract it, then run `zEdit.exe`.
 
+There are two useful arguments available:  
+- `--debug-process` allows you to access the main window with it's corresponding Inspector while a patch is building. Sometimes using a `debugger;` statement or a break point in a patcher could result in zEdit being unresponsive. You can now simply minimize the process window while the patcher is doing it's job. 
+- `--debugger` will open port 9222 on localhost for debugging. You can now use an external debugger like VS Code and WebStorm ([Clients](https://nodejs.org/en/docs/guides/debugging-getting-started/#inspector-clients)).
+
 # development
 This is a git repository.  If you want to help with development you'll need to [clone it](https://help.github.com/en/articles/cloning-a-repository) using `git` from the command line or a Git GUI client.  If you're going to use a Git GUI client I recommend [GitKraken](https://www.gitkraken.com/).
 

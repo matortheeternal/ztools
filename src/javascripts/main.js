@@ -11,6 +11,10 @@ import Logger from './helpers/logger.js';
 global.env = require('./env');
 global.argv = process.argv;
 
+/*Enable debugger like WebStrom to connect to zEdit*/
+if(env.debugger || process.argv.includes('--debugger'))
+    app.commandLine.appendSwitch('remote-debugging-port', '9222');
+
 let mainWindow, progressWindow, showProgressTimeout, lastProgressMessage;
 
 let logger = new Logger();
@@ -90,21 +94,44 @@ let openProgressWindow = function() {
     logger.info(`Window transparency is ${t ? 'en' : 'dis'}abled`);
     logger.info(`Progress window is${m ? ' not ' : ' '}modal`);
     logger.info('Creating progress window...');
-    progressWindow = new BrowserWindow({
-        parent: mainWindow,
-        title: "zEdit Progress",
-        modal: m,
-        show: true,
-        frame: false,
-        closable: false,
-        transparent: t,
-        focusable: true,
-        maximizable: false,
-        minimizable: false,
-        resizable: false,
-        movabale: false,
-        webPreferences: { nodeIntegration: true }
-    });
+
+    let progressWindowOptions;
+    // Added Argument so that the process window doesn't block the main window anymore -> makes ufp debugging easier
+    if (env.debug_process || process.argv.includes('--debug-process'))
+        progressWindowOptions = {
+            width: 900,
+            height: 1000,
+            title: "zEdit Progress",
+            modal: m,
+            show: true,
+            frame: true,
+            closable: false,
+            transparent: t,
+            focusable: true,
+            maximizable: true,
+            minimizable: true,
+            resizable: true,
+            movabale: true,
+            webPreferences: {nodeIntegration: true}
+        };
+    else
+        progressWindowOptions = {
+            parent: mainWindow,
+            title: "zEdit Progress",
+            modal: m,
+            show: true,
+            frame: false,
+            closable: false,
+            transparent: t,
+            focusable: true,
+            maximizable: false,
+            minimizable: false,
+            resizable: false,
+            movabale: false,
+            webPreferences: {nodeIntegration: true}
+        };
+
+    progressWindow = new BrowserWindow(progressWindowOptions);
     progressWindow.hide();
     loadPage(progressWindow, 'progress.html');
     logger.info('Progress window created');

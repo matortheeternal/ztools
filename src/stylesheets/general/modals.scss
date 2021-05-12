@@ -7,6 +7,7 @@
   overflow-y: auto;
   z-index: 15;
   background-color: rgba($modal_shadow, 0.4);
+  padding: 0 20px; /*Modals don't touch the border of the window*/
 
   .modal {
     position: relative;

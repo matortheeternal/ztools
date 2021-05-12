@@ -2,13 +2,15 @@
     <div class="modal" list-view-parent>
         <div class="close-modal" ng-click="$emit('closeModal')"></div>
 
-        <form ng-hide="showCustomScopeTab">
+        <form ng-hide="showCustomScopeTab" class="advanced-search">
             <h2>Advanced Search</h2>
             <section>
                 <label>
                     <span class="input-label">Scope</span>
-                    <select ng-model="searchScope" ng-options="scope for scope in searchScopes" ng-change="searchScopeChanged()"></select>
-                    <span class="edit-custom-scope" ng-click="showCustomScopeTab = true" title="Edit custom scope" ng-show="searchScope === 'Custom'"></span>
+                    <select ng-model="searchScope" ng-options="scope for scope in searchScopes"
+                            ng-change="searchScopeChanged()"></select>
+                    <span class="edit-custom-scope" ng-click="showCustomScopeTab = true" title="Edit custom scope"
+                          ng-show="searchScope === 'Custom'"></span>
                 </label>
             </section>
 
@@ -16,7 +18,7 @@
                 <span class="actions">
                     <button class="action-btn positive small" ng-click="addFilter()">Add Filter</button>
                     <button class="action-btn small" ng-click="$broadcast('importFilters')">Import</button>
-                    <button class="action-btn small"  ng-click="$broadcast('exportFilters')">Export</button>
+                    <button class="action-btn small" ng-click="$broadcast('exportFilters')">Export</button>
                 </span>
             </h3>
             <section>
@@ -36,23 +38,49 @@
             </div>
         </form>
 
-        <form ng-show="showCustomScopeTab">
+        <form ng-show="showCustomScopeTab" class="custom-scope">
             <h2>Create Custom Scope</h2>
 
             <div class="flex">
                 <div>
                     <h3>Files</h3>
                     <list-view items="customScope.files">
-                        <input type="checkbox" ng-model="$parent.item.active" />
-                        {{::$parent.item.filename}}
+                        <label ng-show="$parent.item.visible">
+                            <input type="checkbox" ng-model="$parent.item.active"/>
+                            {{::$parent.item.filename}}
+                        </label>
                     </list-view>
+                    <div class="styled-text-input">
+                        <input type=text name="npc-mod-filter" id="adv-filter-files" ng-model="fileFilter"
+                               placeholder="Filter" ng-change="filterFiles(fileFilter)"/>
+                        <label for="adv-filter-files">Filter (RegEx)</label>
+                    </div>
+
+                    <div class="list-commands">
+                        <button class="action-btn positive" ng-click="removeFilterForFiles()">Remove Filter</button>
+                        <button class="action-btn positive" ng-click="newStateForVisible(customScope.files, true)">Check All</button>
+                        <button class="action-btn positive" ng-click="newStateForVisible(customScope.files, false)">Uncheck All</button>
+                    </div>
                 </div>
                 <div>
                     <h3>Groups</h3>
                     <list-view items="customScope.groups">
-                        <input type="checkbox" ng-model="$parent.item.active" />
-                        {{::$parent.item.signature}} - {{::$parent.item.name}}
+                        <label ng-show="$parent.item.visible">
+                            <input type="checkbox" ng-model="$parent.item.active"/>
+                            {{::$parent.item.signature}} - {{::$parent.item.name}}
+                        </label>
                     </list-view>
+
+                    <div class="styled-text-input">
+                        <input type=text name="npc-mod-filter" id="adv-filter-groups" ng-model="groupFilter"
+                               placeholder="Filter" ng-change="filterGroups(groupFilter)"/>
+                        <label for="adv-filter-groups">Filter (RegEx)</label>
+                    </div>
+                    <div class="list-commands">
+                        <button class="action-btn positive" ng-click="removeFilterForGroups()">Remove Filter</button>
+                        <button class="action-btn positive" ng-click="newStateForVisible(customScope.groups, true)">Check All</button>
+                        <button class="action-btn positive" ng-click="newStateForVisible(customScope.groups, false)">Uncheck All</button>
+                    </div>
                 </div>
             </div>
 

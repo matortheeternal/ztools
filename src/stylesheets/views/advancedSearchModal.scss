@@ -1,6 +1,7 @@
 .advanced-search-modal {
   .modal {
-    max-width: 700px;
+    max-width: 90vw;
+    width: fit-content;
   }
 
   form .input-label {
@@ -42,9 +43,27 @@
     align-items: flex-start;
     justify-content: stretch;
     margin-top: 4px;
+    margin-right: -20px;
+    flex-wrap: wrap;
 
     > div {
       flex: 1;
+      min-width: 340px;
+      margin-right: 20px;
+    }
+  }
+
+  .advanced-search {
+    max-width: 90vw;
+    width: 700px;
+  }
+
+  .custom-scope {
+    max-width: 90vw;
+    width: fit-content;
+
+    .list-item.selected {
+      background: unset;
     }
   }
 
@@ -52,6 +71,7 @@
     overflow-y: auto;
     max-height: 400px;
     display: block;
+    height: 400px;
   }
 
   reference-select {
@@ -119,4 +139,85 @@
       }
     }
   }
+
+
+  .styled-text-input {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+    $accent-color: desaturate($positive, 0.1);
+
+    input {
+      font-family: inherit;
+      width: 100%;
+      border: 0;
+      border-bottom: 2px solid $accent-color;
+      outline: 0;
+      font-size: 1rem;
+      /*color: #fff;*/
+      padding: 7px 0;
+      background: transparent;
+      transition: border-color 0.2s;
+
+      &::placeholder {
+        color: transparent;
+      }
+
+      &:placeholder-shown ~ label {
+        font-size: 1rem;
+        cursor: text;
+        top: 25px;
+      }
+
+      &:focus {
+        /*padding-bottom: 6px;*/
+        font-weight: 700;
+        border-width: 3px;
+        margin-bottom: -1px;
+        border-image: linear-gradient(to right, $accent-color, transparentize($accent-color, 0.5));
+        border-image-slice: 1;
+      }
+
+      &:focus ~ label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: $accent-color;
+        font-weight: 700;
+      }
+
+    }
+
+    label {
+      position: absolute;
+      top: 0;
+      display: block;
+      transition: 0.2s;
+      font-size: 1rem;
+      /*color: #9b9b9b;*/
+    }
+  }
+
+  .list-commands {
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    margin: 4px 0;
+
+    .action-btn {
+      color: $secondary_action;
+      font-size: 0.9rem;
+      flex: 1;
+
+      &:first-child {
+        margin-left: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
 }

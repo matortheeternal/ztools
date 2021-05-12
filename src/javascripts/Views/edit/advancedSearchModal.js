@@ -32,7 +32,8 @@ ngapp.controller('advancedSearchModalController', function($scope, searchService
     let getCustomScopeFiles = function() {
         return xelib.GetLoadedFileNames().map(filename => ({
             filename: filename,
-            active: true
+            active: true,
+            visible: true
         }));
     };
 
@@ -41,7 +42,8 @@ ngapp.controller('advancedSearchModalController', function($scope, searchService
         return Object.keys(map).sort().map(signature => ({
             signature: signature,
             name: map[signature],
-            active: true
+            active: true,
+            visible: true
         }));
     };
 
@@ -87,6 +89,45 @@ ngapp.controller('advancedSearchModalController', function($scope, searchService
     $scope.onKeyDown = function(e) {
         if (!$scope.showCustomScopeTab) return;
         $scope.$broadcast('keyDown', e);
+    };
+
+    function atLeastOneRegexMatch(regEx, string) {
+        try {
+            const reg = new RegExp(regEx, 'i');
+            const exec = reg.exec(string);
+            return exec !== null;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    $scope.newStateForVisible = function(items, newState) {
+        items.forEach((item) => {
+            if(item.visible)
+                item.active = newState;
+        });
+    };
+
+    $scope.filterFiles = function(filter) {
+        $scope.customScope.files.forEach((file) => {
+            file.visible = !filter || atLeastOneRegexMatch(filter, file.filename);
+        });
+    };
+
+    $scope.filterGroups = function(filter) {
+        $scope.customScope.groups.forEach((group) => {
+            group.visible = !filter || atLeastOneRegexMatch(filter, group.signature + " - " + group.name);
+        });
+    };
+
+    $scope.removeFilterForFiles = function() {
+        $scope.filterFiles();
+        $scope.fileFilter = "";
+    };
+
+    $scope.removeFilterForGroups = function() {
+        $scope.filterGroups();
+        $scope.groupFilter = "";
     };
 
     // initialization
